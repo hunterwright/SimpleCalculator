@@ -6,5 +6,7 @@
  * Main file for the calculator.
  */
 public class MainFile {
-
+    public static void main(String[] args) {
+        new CalculatorFrame();
+    }
 }
