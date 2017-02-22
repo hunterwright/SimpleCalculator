@@ -7,15 +7,22 @@ public class CalculatorFrame extends JFrame {
     JButton[] numBtn = new JButton[10];
     JButton[] opBtn = new JButton[8];
 
-    JTextField txt_input = new JTextField("");
-    JTextField txt_output = new JTextField("");
+    JTextField txt_upper = new JTextField("");
+    JTextField txt_mid = new JTextField("");
+    JTextField txt_bottom = new JTextField("");
 
     private String s = "";
+
+    private double total = 0;
+    private double firstNum = 0;
+    private double secondNum = 0;
 
     private boolean isMult = false;
     private boolean isDiv = false;
     private boolean isAdd = false;
     private boolean isSub = false;
+
+    private boolean isPlusOrMinus = false;
 
     public CalculatorFrame() {
         // FRAME SETUP -----------------------------------------
@@ -27,11 +34,17 @@ public class CalculatorFrame extends JFrame {
         setResizable(false);
         //------------------------------------------------------
 
-        txt_input.setBounds(5,5,320,20);
-        add(txt_input);
-        txt_input.setHorizontalAlignment(JLabel.RIGHT);
-        txt_output.setBounds(5,35,320,20);
-        add(txt_output);
+        txt_upper.setBounds(5, 5, 320, 20);
+        add(txt_upper);
+        txt_upper.setHorizontalAlignment(JLabel.RIGHT);
+
+        txt_mid.setBounds(5, 25, 320, 20);
+        add(txt_mid);
+        txt_mid.setHorizontalAlignment(JLabel.RIGHT);
+
+        txt_bottom.setBounds(5, 45, 320, 20);
+        add(txt_bottom);
+        txt_bottom.setHorizontalAlignment(JLabel.RIGHT);
 
         // SETS NUMBER BUTTONS
         for (int i = 0; i < numBtn.length; i++) {
@@ -55,7 +68,7 @@ public class CalculatorFrame extends JFrame {
 
         // SETS OPERATOR BUTTONS
         opBtn[0] = new JButton(".");
-        opBtn[1] = new JButton("-/+");
+        opBtn[1] = new JButton("±");
         opBtn[2] = new JButton("C");
         opBtn[3] = new JButton("+");
         opBtn[4] = new JButton("-");
@@ -78,81 +91,157 @@ public class CalculatorFrame extends JFrame {
 
         // NUMBER BUTTON FUNCTIONS
         numBtn[0].addActionListener(e -> {
-            s+="0";
-            txt_input.setText(s);
+            s += "0";
+            txt_bottom.setText(s);
         });
         numBtn[1].addActionListener(e -> {
-            s+="1";
-            txt_input.setText(s);
+            s += "1";
+            txt_bottom.setText(s);
         });
         numBtn[2].addActionListener(e -> {
-            s+="2";
-            txt_input.setText(s);
+            s += "2";
+            txt_bottom.setText(s);
         });
         numBtn[3].addActionListener(e -> {
-            s+="3";
-            txt_input.setText(s);
+            s += "3";
+            txt_bottom.setText(s);
         });
         numBtn[4].addActionListener(e -> {
-            s+="4";
-            txt_input.setText(s);
+            s += "4";
+            txt_bottom.setText(s);
         });
         numBtn[5].addActionListener(e -> {
-            s+="5";
-            txt_input.setText(s);
+            s += "5";
+            txt_bottom.setText(s);
         });
         numBtn[6].addActionListener(e -> {
-            s+="6";
-            txt_input.setText(s);
+            s += "6";
+            txt_bottom.setText(s);
         });
         numBtn[7].addActionListener(e -> {
-            s+="7";
-            txt_input.setText(s);
+            s += "7";
+            txt_bottom.setText(s);
         });
         numBtn[8].addActionListener(e -> {
-            s+="8";
-            txt_input.setText(s);
+            s += "8";
+            txt_bottom.setText(s);
         });
         numBtn[9].addActionListener(e -> {
-            s+="9";
-            txt_input.setText(s);
+            s += "9";
+            txt_bottom.setText(s);
         });
-
 
         // OPERATOR BUTTON FUNCTIONS
         opBtn[0].addActionListener(e -> {
-            String str = txt_input.getText();
-            if(!str.contains(".")) {
-                s+=".";
-                txt_input.setText(s);
+            String str = txt_bottom.getText();
+            if (txt_bottom.getText().equals("") && !str.contains(".")) {
+                s += "0.";
+                txt_bottom.setText(s);
+            } else if (!txt_bottom.getText().equals("") && !str.contains(".")) {
+                s += ".";
+                txt_bottom.setText(s);
             }
         });
         opBtn[1].addActionListener(e -> {
-            s+="";
-            txt_input.setText(s);
+            if(!isPlusOrMinus) {
+                s = "-" + txt_bottom.getText();
+                txt_bottom.setText(s);
+
+                isPlusOrMinus = true;
+            } else if (isPlusOrMinus) {
+                s = txt_bottom.getText().replace("-","");
+                txt_bottom.setText(s);
+
+                isPlusOrMinus = false;
+            }
         });
         opBtn[2].addActionListener(e -> {
-            txt_input.setText("");
-            s = "";
+            if (txt_bottom.getText().equals("")) {
+                txt_upper.setText("");
+                txt_mid.setText("");
+                s = "";
+            } else {
+                txt_bottom.setText("");
+            }
         });
         opBtn[3].addActionListener(e -> {
-            s+="+";
-            txt_input.setText(s);
+            s = "+";
+            txt_mid.setText(s);
+
+            txt_upper.setText(txt_bottom.getText());
+            txt_bottom.setText("");
+            s = "";
+
+            isAdd = true;
+            isSub = false;
+            isMult = false;
+            isDiv = false;
         });
         opBtn[4].addActionListener(e -> {
-            s+="-";
-            txt_input.setText(s);
+            s = "-";
+            txt_mid.setText(s);
+
+            txt_upper.setText(txt_bottom.getText());
+            txt_bottom.setText("");
+            s = "";
+
+            isAdd = false;
+            isSub = true;
+            isMult = false;
+            isDiv = false;
         });
         opBtn[5].addActionListener(e -> {
-            s+="*";
-            txt_input.setText(s);
+            s = "*";
+            txt_mid.setText(s);
+
+            txt_upper.setText(txt_bottom.getText());
+            txt_bottom.setText("");
+            s = "";
+
+            isAdd = false;
+            isSub = false;
+            isMult = true;
+            isDiv = false;
         });
         opBtn[6].addActionListener(e -> {
-            s+="/";
-            txt_input.setText(s);
+            s = "/";
+            txt_mid.setText(s);
+
+            txt_upper.setText(txt_bottom.getText());
+            txt_bottom.setText("");
+            s = "";
+
+            isAdd = false;
+            isSub = false;
+            isMult = false;
+            isDiv = true;
         });
         opBtn[7].addActionListener(e -> {
-            txt_input.setText("");
+            System.out.println("hi");
+            if (!txt_upper.getText().equals("")) {
+                System.out.println("hi2");
+                if (txt_bottom.getText().equals("")) {
+                    txt_upper.setText("");
+                    txt_mid.setText("");
+                    txt_bottom.setText("" + firstNum + "");
+                } else {
+                    firstNum = Double.parseDouble(txt_upper.getText());
+                    secondNum = Double.parseDouble(txt_bottom.getText());
+
+                    if (isAdd) {
+                        total = firstNum + secondNum;
+                    } else if (isSub) {
+                        total = firstNum - secondNum;
+                    } else if (isMult) {
+                        total = firstNum * secondNum;
+                    } else if (isDiv) {
+                        total = firstNum / secondNum;
+                    }
+                    txt_upper.setText("");
+                    txt_mid.setText("");
+                    txt_bottom.setText("" + total + "");
+                }
+            }
             s = "";
         });
 
