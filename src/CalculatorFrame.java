@@ -37,14 +37,17 @@ public class CalculatorFrame extends JFrame {
         txt_upper.setBounds(5, 5, 320, 20);
         add(txt_upper);
         txt_upper.setHorizontalAlignment(JLabel.RIGHT);
+        txt_upper.setEditable(false);
 
         txt_mid.setBounds(5, 25, 320, 20);
         add(txt_mid);
         txt_mid.setHorizontalAlignment(JLabel.RIGHT);
+        txt_mid.setEditable(false);
 
         txt_bottom.setBounds(5, 45, 320, 20);
         add(txt_bottom);
         txt_bottom.setHorizontalAlignment(JLabel.RIGHT);
+        txt_bottom.setEditable(false);
 
         // SETS NUMBER BUTTONS
         for (int i = 0; i < numBtn.length; i++) {
@@ -143,13 +146,13 @@ public class CalculatorFrame extends JFrame {
             }
         });
         opBtn[1].addActionListener(e -> {
-            if(!isPlusOrMinus) {
+            if (!isPlusOrMinus) {
                 s = "-" + txt_bottom.getText();
                 txt_bottom.setText(s);
 
                 isPlusOrMinus = true;
             } else if (isPlusOrMinus) {
-                s = txt_bottom.getText().replace("-","");
+                s = txt_bottom.getText().replace("-", "");
                 txt_bottom.setText(s);
 
                 isPlusOrMinus = false;
@@ -160,66 +163,115 @@ public class CalculatorFrame extends JFrame {
                 txt_upper.setText("");
                 txt_mid.setText("");
                 s = "";
+
+                isAdd = false;
+                isSub = false;
+                isMult = false;
+                isDiv = false;
             } else {
                 txt_bottom.setText("");
+                s = "";
+
+                isAdd = false;
+                isSub = false;
+                isMult = false;
+                isDiv = false;
             }
         });
         opBtn[3].addActionListener(e -> {
-            s = "+";
-            txt_mid.setText(s);
+            if (!isAdd && !txt_bottom.getText().equals("")) {
+                s = "+";
+                txt_mid.setText(s);
 
-            txt_upper.setText(txt_bottom.getText());
-            txt_bottom.setText("");
-            s = "";
+                txt_upper.setText(txt_bottom.getText());
+                txt_bottom.setText("");
+                s = "";
 
-            isAdd = true;
-            isSub = false;
-            isMult = false;
-            isDiv = false;
+                isAdd = true;
+                isSub = false;
+                isMult = false;
+                isDiv = false;
+            } else if (isSub || isDiv || isMult) {
+                txt_mid.setText("");
+                txt_mid.setText("+");
+
+                isAdd = true;
+                isSub = false;
+                isMult = false;
+                isDiv = false;
+            }
         });
         opBtn[4].addActionListener(e -> {
-            s = "-";
-            txt_mid.setText(s);
+            if (!isSub && !txt_bottom.getText().equals("")) {
+                s = "-";
+                txt_mid.setText(s);
 
-            txt_upper.setText(txt_bottom.getText());
-            txt_bottom.setText("");
-            s = "";
+                txt_upper.setText(txt_bottom.getText());
+                txt_bottom.setText("");
+                s = "";
 
-            isAdd = false;
-            isSub = true;
-            isMult = false;
-            isDiv = false;
+                isAdd = false;
+                isSub = true;
+                isMult = false;
+                isDiv = false;
+            } else if (isAdd || isDiv || isMult) {
+                txt_mid.setText("");
+                txt_mid.setText("-");
+
+                isAdd = false;
+                isSub = true;
+                isMult = false;
+                isDiv = false;
+            }
         });
         opBtn[5].addActionListener(e -> {
-            s = "*";
-            txt_mid.setText(s);
+            if (!isMult && !txt_bottom.getText().equals("")) {
+                s = "*";
+                txt_mid.setText(s);
 
-            txt_upper.setText(txt_bottom.getText());
-            txt_bottom.setText("");
-            s = "";
+                txt_upper.setText(txt_bottom.getText());
+                txt_bottom.setText("");
+                s = "";
 
-            isAdd = false;
-            isSub = false;
-            isMult = true;
-            isDiv = false;
+                isAdd = false;
+                isSub = false;
+                isMult = true;
+                isDiv = false;
+            } else if (isAdd || isSub || isDiv) {
+                txt_mid.setText("");
+                txt_mid.setText("*");
+
+                isAdd = false;
+                isSub = false;
+                isMult = true;
+                isDiv = false;
+            }
         });
         opBtn[6].addActionListener(e -> {
-            s = "/";
-            txt_mid.setText(s);
+            if (!isDiv && !txt_bottom.getText().equals("")) {
+                s = "/";
+                txt_mid.setText(s);
 
-            txt_upper.setText(txt_bottom.getText());
-            txt_bottom.setText("");
-            s = "";
+                txt_upper.setText(txt_bottom.getText());
+                txt_bottom.setText("");
+                s = "";
 
-            isAdd = false;
-            isSub = false;
-            isMult = false;
-            isDiv = true;
+                isAdd = false;
+                isSub = false;
+                isMult = false;
+                isDiv = true;
+            } else if (isAdd || isSub || isMult) {
+                txt_mid.setText("");
+                txt_mid.setText("/");
+
+                isAdd = false;
+                isSub = false;
+                isMult = false;
+                isDiv = true;
+            }
         });
         opBtn[7].addActionListener(e -> {
-            System.out.println("hi");
             if (!txt_upper.getText().equals("")) {
-                System.out.println("hi2");
                 if (txt_bottom.getText().equals("")) {
                     txt_upper.setText("");
                     txt_mid.setText("");
